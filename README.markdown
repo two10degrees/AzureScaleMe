@@ -68,6 +68,18 @@ This metric provider will monitor a message queue, and report whether a scale up
  - __MinValue__ The minimum acceptable length of a queue. A value smaller than this will signal a scale down. (i.e. 5)
  - __MaxThresholdWait__ The number of minutes for which the queue should be out of the acceptable range before a scale is triggered. (i.e. 2)
 
+ > In this example, if a queue length is greater than 100 for 2 minutes, a scale up will be triggered. If the queue length is less than 5 for 2 minutes, and scale down will be triggered.
+
+The configuration file looks like this:
+
+  <object type="Two10.AzureScaleMe.MetricProviders.QueueMetricProvider">
+    <property name="StorageConnectionString" value="UseDevelopmentStorage=true" />
+    <property name="QueueName" value="foo" />
+    <property name="MaxValue" value="100" />
+    <property name="MinValue" value="5" />
+    <property name="MaxThresholdWait" value="2" />
+  </object>
+
 ### PerfCounterMetricProvider
 
 This metric provider will monitor a performance counter, and report whether a scale up/down is required based on the threshold values set.
@@ -86,7 +98,25 @@ This metric provider will monitor a performance counter, and report whether a sc
  - __ConfigureCounters__ A boolean value, used to control whether counters should be automatically configured or not. (i.e. True)
  - __CounterTableName__ The table name to store and retrieve the counter information.
 
-In this example, a scale up will be triggerd after the CPU time averaged over 10 minutes exceeds 80% for 20 minutes for all roles instances. A scale down will be triggered when if the CPU time averaged over 10 minutes is less than 5% for 20 minutes for all role isntances.
+ > In this example, a scale up will be triggerd after the CPU time averaged over 10 minutes exceeds 80% for 20 minutes for all roles instances. A scale down will be triggered when if the CPU time averaged over 10 minutes is less than 5% for 20 minutes for all role isntances.
+
+The configuration file looks like this:
+
+  <object type="Two10.AzureScaleMe.MetricProviders.PerfCounterMetricProvider">
+    <property name="StorageConnectionString" value="UseDevelopmentStorage=true" />
+    <property name="Counter" value="\Processor(_Total)\% Processor Time" />
+    <property name="MaxValue" value="80" />
+    <property name="MinValue" value="5" />
+    <property name="MaxThresholdWait" value="20" />
+    <property name="SampleRate" value="5" />
+    <property name="SamplePeriod" value="10" />
+    <property name="SubscriptionId" value="82f8e1cd-ee8d-414e-b6a5-be7b18a1fa89" />
+    <property name="ServiceName" value="ServiceName" />
+    <property name="RoleName" value="RoleName" />
+    <property name="CertificateThumbprint" value="B929E1E212A92B9CA67F7445F9CB8BF09EC5231E" />
+    <property name="ConfigureCounters" value="True" />
+    <property name="CounterTableName" value="counters" />
+  </object>
 
 If performance counters are already configured, the metric provider can be pointed at the existing table capturing the data. If not, the provider can create the tables, and configure the roles accordingly.
 
@@ -100,3 +130,48 @@ This scaling provider will modify the instance count by 1, within the bounds spe
  - __ServiceName__ The name of the service which holds the role to be scaled. 
  - __RoleName__ The name of the role to be scaled.
  - __CertificateThumbprint__ The thumbprint of the certificate to use for updating the role.
+
+The configuration file looks like this:
+
+	<object type="Two10.AzureScaleMe.ScalingProviders.IncrementalScaler">
+		<property name="MinInstances" value="1" />
+		<property name="MaxInstances" value="10" />
+		<property name="SubscriptionId" value="82f8e1cd-ee8d-414e-b6a5-be7b18a1fa89" />
+		<property name="ServiceName" value="ServiceName" />
+		<property name="RoleName" value="RoleName" />
+		<property name="CertificateThumbprint" value="B929E1E212A92B9CA67F7445F9CB8BF09EC5231E" />
+	</object>
+
+RoleMonitor
+-----------
+
+The RoleMonitor controls how the metrics are totaled, to provide a figure for the scaling provider. It is also responsible for introducing an interval between scaling attempts, as a role may take time to provision, and it's affect on the metrics may not be immediate. Therefore it is necessary to introduce a period after a scaling, for which no action should be taken. Metrics over this period are still captured, but the result is not forwarded to the scaling provider.
+
+There are three options for combining together the results of the metric providers. Min, Max orSum. 
+
+Min will report the lowset provided metric result (optimistic). 
+Max will report the higest value (pessimistic). 
+Sum will add together all results.
+
+ > For example, if one metric is returning a scale up (+1) and another is returning scale down (-1). The min function will return -1, the max function will return +1, and the sum fucntion will return 0. This setting should be carefully chosen if more than one metric is employed. If there is only one metric, it's irrelevant.
+
+The settings of a RoleMonitor are:
+
+ - __Name__ An arbitrary name.
+ - __MinScalingInterval__ The minimum number of minutes between two scaling attempts. (i.e. 30)
+ - __CompositionStrategy__ The mechanism to use to compose all metric responses into a scaling attempt. (i.e. Sum)
+
+ The configuration file looks like this:
+
+	<object type="Two10.AzureScaleMe.RoleMonitor">
+		<property name="Name" value="AzureTestProject"/>
+		<property name="MinScalingInterval" value="30"/>
+		<property name="CompositionStrategy" value="Sum"/>
+		...
+
+Certificates
+------------
+
+X509 Certificates are required to configure the performance counters, and to adjust the instance count of a role. The certificate must be installed in the local certificate store, and added to the management certificates in the Azure Portal. The certificate does not need to signed by a root authority, and can be created automatically by Visual Studio.
+
+AzureScaleMe will automatically scan all files in the working directory for certificates (*.cer), and install them in the local store before starting. The configuration file requires the thumbprint of the certificate to use for each operation. Multiple certificates can be used (i.e. you may be inspecting more than one subscription).
