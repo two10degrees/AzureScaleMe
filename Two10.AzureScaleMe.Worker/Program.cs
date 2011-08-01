@@ -11,6 +11,7 @@ namespace Two10.AzureScaleMe.Worker
     {
         static void Main()
         {
+            AzureScaleMe.ScaleMe.InstallCertificates();
             AzureScaleMe.ScaleMe.Run(10000);
         }
     }

@@ -60,9 +60,43 @@ Within the application .config file, there is a Spring section (http://www.sprin
 
 ### QueueMetricProvider
 
+This metric provider will monitor a message queue, and report whether a scale up/down is required based on the treshold values set.
+
  - __StorageConnectionString__ The connection string to use to locate the queue to be monitored. (i.e. "UseDevelopmentStorage=true")
  - __QueueName__ The name of the queue to be monitored. (i.e. "foo")
  - __MaxValue__ The maximum acceptable length of a queue. A value greater than this will signal a scale up. (i.e. 100)
  - __MinValue__ The minimum acceptable length of a queue. A value smaller than this will signal a scale down. (i.e. 5)
  - __MaxThresholdWait__ The number of minutes for which the queue should be out of the acceptable range before a scale is triggered. (i.e. 2)
 
+### PerfCounterMetricProvider
+
+This metric provider will monitor a performance counter, and report whether a scale up/down is required based on the threshold values set.
+
+ - __StorageConnectionString__ The connection string to use to store the performance counters. (i.e. "UseDevelopmentStorage=true")
+ - __Counter__ The name of the perf counter to be monitored (i.e. "\Processor(_Total)\% Processor Time")
+ - __MaxValue__  The maximum acceptable value for the counter. A value greater than this will signal a scale up. (i.e. 80)
+ - __MinValue__ The minimum acceptable value for the counter. A value smaller than this will signal a scale down. (i.e. 5)
+ - __MaxThresholdWait__  The number of minutes for which the queue should be out of the acceptable range before a scale is triggered. (i.e. 20)
+ - __SampleRate__ The frequency (in seconds) which the counter will be sampled. (i.e. 5)
+ - __SamplePeriod__ The number of minutes over which to average the counter value (i.e. 10)
+ - __SubscriptionId__ The SubscriptionId of the subscription which holds the role to be monitored.
+ - __ServiceName__ The name of the service which holds the role to be monitored.
+ - __RoleName__ The name of the role to be monitored.
+ - __CertificateThumbprint__ The thumbprint of the certificate to use for setting up the performance counters.
+ - __ConfigureCounters__ A boolean value, used to control whether counters should be automatically configured or not. (i.e. True)
+ - __CounterTableName__ The table name to store and retrieve the counter information.
+
+In this example, a scale up will be triggerd after the CPU time averaged over 10 minutes exceeds 80% for 20 minutes for all roles instances. A scale down will be triggered when if the CPU time averaged over 10 minutes is less than 5% for 20 minutes for all role isntances.
+
+If performance counters are already configured, the metric provider can be pointed at the existing table capturing the data. If not, the provider can create the tables, and configure the roles accordingly.
+
+### IncrementalScaler
+
+This scaling provider will modify the instance count by 1, within the bounds specified.
+
+ - __MinInstances__ The minimum number of acceptable instances. (i.e. 1)
+ - __MaxInstances__ The maximum number of acceptable instances. (i.e. 10)
+ - __SubscriptionId__ The SubscriptionId of the subscription which holds the role to be scaled.
+ - __ServiceName__ The name of the service which holds the role to be scaled. 
+ - __RoleName__ The name of the role to be scaled.
+ - __CertificateThumbprint__ The thumbprint of the certificate to use for updating the role.

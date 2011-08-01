@@ -218,6 +218,16 @@ namespace Two10.AzureScaleMe
             return certs[0];
         }
 
+
+        public static bool InstallCertificate(string path)
+        {
+            X509Certificate2 certificate = new X509Certificate2(path);
+            X509Store certificateStore = new X509Store(StoreName.My, StoreLocation.CurrentUser);
+            certificateStore.Open(OpenFlags.ReadWrite);
+            certificateStore.Add(certificate);
+            return true;
+        }
+
     }
 
 

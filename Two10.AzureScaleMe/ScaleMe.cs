@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
+using System.IO;
 
 namespace Two10.AzureScaleMe
 {
@@ -36,6 +37,13 @@ namespace Two10.AzureScaleMe
             } 
         }
 
+        public static void InstallCertificates()
+        {
+            foreach (var file in Directory.EnumerateFiles(".", "*.cer"))
+            {
+                Azure.InstallCertificate(file);
+            }
+        }
 
         public static IList<RoleMonitor> GetRoleMonitors()
         {
