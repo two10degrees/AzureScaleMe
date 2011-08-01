@@ -60,7 +60,7 @@ Within the application .config file, there is a Spring section (http://www.sprin
 
 ### QueueMetricProvider
 
- - _StorageConnectionString_ The connection string to use to locate the queue to be monitored. (i.e. "UseDevelopmentStorage=true")
+ - __StorageConnectionString__ The connection string to use to locate the queue to be monitored. (i.e. "UseDevelopmentStorage=true")
  - __QueueName__ The name of the queue to be monitored. (i.e. "foo")
  - __MaxValue__ The maximum acceptable length of a queue. A value greater than this will signal a scale up. (i.e. 100)
  - __MinValue__ The minimum acceptable length of a queue. A value smaller than this will signal a scale down. (i.e. 5)
