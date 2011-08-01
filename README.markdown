@@ -61,8 +61,8 @@ Within the application .config file, there is a Spring section (http://www.sprin
 ### QueueMetricProvider
 
  - _StorageConnectionString_ The connection string to use to locate the queue to be monitored. (i.e. "UseDevelopmentStorage=true")
- - _QueueName_ The name of the queue to be monitored. (i.e. "foo")
- - _MaxValue_ The maximum acceptable length of a queue. A value greater than this will signal a scale up. (i.e. 100)
- - _MinValue_ The minimum acceptable length of a queue. A value smaller than this will signal a scale down. (i.e. 5)
- - _MaxThresholdWait_ The number of minutes for which the queue should be out of the acceptable range before a scale is triggered. (i.e. 2)
+ - __QueueName__ The name of the queue to be monitored. (i.e. "foo")
+ - __MaxValue__ The maximum acceptable length of a queue. A value greater than this will signal a scale up. (i.e. 100)
+ - __MinValue__ The minimum acceptable length of a queue. A value smaller than this will signal a scale down. (i.e. 5)
+ - __MaxThresholdWait__ The number of minutes for which the queue should be out of the acceptable range before a scale is triggered. (i.e. 2)
 
