@@ -6,7 +6,7 @@ A simple application which allows you to scale Windows Azure instances using use
 Introduction
 ------------
 
-The ability to quickly scale the number of servers running your application is one of the most compelling features of the Windows Azure platform. However, the ability to do this automatically is not a feature currently available in platform. A number of tools and samples are available, demonstrating how this can be done, but in my opinion they are either over-complicated, inflexible or incomplete. AzureScaleMe attempts to overcome this problem with a simple programming model which supports extensibility. This means that if you don't like the way metrics are captured you can plug your own code in by implementing one method and changing some configuration.
+The ability to quickly scale the number of servers running your application is one of the most compelling features of the Windows Azure platform. However, the ability to do this automatically is not a feature currently available in platform. A number of tools and samples are available demonstrating how this can be done but they are either over-complicated, inflexible or incomplete. AzureScaleMe attempts to overcome this problem with a simple programming model which supports extensibility. This means that if you don't like the way metrics are captured, you can plug your own code in by implementing one method and changing some configuration.
 
 Deployment
 ----------
@@ -60,9 +60,9 @@ Within the application .config file, there is a Spring section (http://www.sprin
 
 ### QueueMetricProvider
 
- - *StorageConnectionString* The connection string to use to locate the queue to be monitored. (i.e. "UseDevelopmentStorage=true")
- - *QueueName* The name of thr queue to be monitored. (i.e. "foo")
- - *MaxValue* The maximum acceptable length of a queue. A value greater than this will signal a scale up. (i.e. 100)
- - *MinValue* The minimum acceptable length of a queue. A value smaller than this will signal a scale down. (i.e. 5)
- - *MaxThresholdWait* The number of minutes for which the queue should be out of the acceptable range before a scale is triggered. (i.e. 2)
+ - _StorageConnectionString_ The connection string to use to locate the queue to be monitored. (i.e. "UseDevelopmentStorage=true")
+ - _QueueName_ The name of the queue to be monitored. (i.e. "foo")
+ - _MaxValue_ The maximum acceptable length of a queue. A value greater than this will signal a scale up. (i.e. 100)
+ - _MinValue_ The minimum acceptable length of a queue. A value smaller than this will signal a scale down. (i.e. 5)
+ - _MaxThresholdWait_ The number of minutes for which the queue should be out of the acceptable range before a scale is triggered. (i.e. 2)
 
