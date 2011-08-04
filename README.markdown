@@ -96,7 +96,7 @@ This metric provider will monitor a performance counter, and report whether a sc
  - __RoleName__ The name of the role to be monitored.
  - __CertificateThumbprint__ The thumbprint of the certificate to use for setting up the performance counters.
  - __ConfigureCounters__ A boolean value, used to control whether counters should be automatically configured or not. (i.e. True)
- - __CounterTableName__ The table name to store and retrieve the counter information.
+ - __CounterTableName__ The table name to store and retrieve the counter information (at the moment, Azure will always call this 'WADPerformanceCountersTable').
 
  > In this example, a scale up will be triggerd after the CPU time averaged over 10 minutes exceeds 80% for 20 minutes for all roles instances. A scale down will be triggered when if the CPU time averaged over 10 minutes is less than 5% for 20 minutes for all role isntances.
 
@@ -115,7 +115,7 @@ The configuration file looks like this:
     <property name="RoleName" value="RoleName" />
     <property name="CertificateThumbprint" value="B929E1E212A92B9CA67F7445F9CB8BF09EC5231E" />
     <property name="ConfigureCounters" value="True" />
-    <property name="CounterTableName" value="counters" />
+    <property name="CounterTableName" value="WADPerformanceCountersTable" />
   </object>
 
 If performance counters are already configured, the metric provider can be pointed at the existing table capturing the data. If not, the provider can create the tables, and configure the roles accordingly.
@@ -133,14 +133,14 @@ This scaling provider will modify the instance count by 1, within the bounds spe
 
 The configuration file looks like this:
 
-	<object type="Two10.AzureScaleMe.ScalingProviders.IncrementalScaler">
-		<property name="MinInstances" value="1" />
-		<property name="MaxInstances" value="10" />
-		<property name="SubscriptionId" value="82f8e1cd-ee8d-414e-b6a5-be7b18a1fa89" />
-		<property name="ServiceName" value="ServiceName" />
-		<property name="RoleName" value="RoleName" />
-		<property name="CertificateThumbprint" value="B929E1E212A92B9CA67F7445F9CB8BF09EC5231E" />
-	</object>
+    <object type="Two10.AzureScaleMe.ScalingProviders.IncrementalScaler">
+        <property name="MinInstances" value="1" />
+        <property name="MaxInstances" value="10" />
+        <property name="SubscriptionId" value="82f8e1cd-ee8d-414e-b6a5-be7b18a1fa89" />
+        <property name="ServiceName" value="ServiceName" />
+        <property name="RoleName" value="RoleName" />
+        <property name="CertificateThumbprint" value="B929E1E212A92B9CA67F7445F9CB8BF09EC5231E" />
+    </object>
 
 RoleMonitor
 -----------
@@ -163,15 +163,28 @@ The settings of a RoleMonitor are:
 
  The configuration file looks like this:
 
-	<object type="Two10.AzureScaleMe.RoleMonitor">
-		<property name="Name" value="AzureTestProject"/>
-		<property name="MinScalingInterval" value="30"/>
-		<property name="CompositionStrategy" value="Sum"/>
-		...
+    <object type="Two10.AzureScaleMe.RoleMonitor">
+        <property name="Name" value="AzureTestProject"/>
+        <property name="MinScalingInterval" value="30"/>
+        <property name="CompositionStrategy" value="Sum"/>
+        ...
 
 Certificates
 ------------
 
 X509 Certificates are required to configure the performance counters, and to adjust the instance count of a role. The certificate must be installed in the local certificate store, and added to the management certificates in the Azure Portal. The certificate does not need to signed by a root authority, and can be created automatically by Visual Studio.
 
-AzureScaleMe will automatically scan all files in the working directory for certificates (*.cer), and install them in the local store before starting. The configuration file requires the thumbprint of the certificate to use for each operation. Multiple certificates can be used (i.e. you may be inspecting more than one subscription).
+Certificates can be added to the Worker project (ensure thay are copied to the output directory), and they should be added to the 'Certificate' section of the config file. The certificate should have the private key exported (this creates a .pfx file), and that should be set as the value of 'Item2'.
+
+	<object id="Certificates" type="System.Collections.Generic.List&lt;System.Tuple&lt;string, string&gt;&gt;" singleton="true">
+		<constructor-arg name="collection">
+			<list element-type="System.Tuple&lt;string, string&gt;">
+
+				<object type="System.Tuple&lt;string, string&gt;">
+					<constructor-arg name="Item1" value="certificate.pfx" />
+					<constructor-arg name="Item2" value="Password" />
+				</object>
+
+			</list>
+		</constructor-arg>
+	</object>

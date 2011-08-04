@@ -39,10 +39,12 @@ namespace Two10.AzureScaleMe
 
         public static void InstallCertificates()
         {
-            foreach (var file in Directory.EnumerateFiles(".", "*.cer"))
+            IList<Tuple<string,string>> certificates = Spring.Create<IList<Tuple<string,string>>>("Certificates");
+            foreach (var cert in certificates)
             {
-                Azure.InstallCertificate(file);
+                Azure.InstallCertificate(cert.Item1, cert.Item2);
             }
+
         }
 
         public static IList<RoleMonitor> GetRoleMonitors()

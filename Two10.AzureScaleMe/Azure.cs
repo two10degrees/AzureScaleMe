@@ -219,13 +219,24 @@ namespace Two10.AzureScaleMe
         }
 
 
-        public static bool InstallCertificate(string path)
+        public static bool InstallCertificate(string path, string password)
         {
-            X509Certificate2 certificate = new X509Certificate2(path);
-            X509Store certificateStore = new X509Store(StoreName.My, StoreLocation.CurrentUser);
-            certificateStore.Open(OpenFlags.ReadWrite);
-            certificateStore.Add(certificate);
-            return true;
+            if (string.IsNullOrWhiteSpace(path)) throw new ArgumentNullException("path");
+
+            Trace.WriteLine("Adding certificate: " + path);
+            try
+            {
+                X509Certificate2 certificate = string.IsNullOrWhiteSpace(password) ? new X509Certificate2(path) : new X509Certificate2(path, password);
+                X509Store certificateStore = new X509Store(StoreName.My, StoreLocation.CurrentUser);
+                certificateStore.Open(OpenFlags.ReadWrite);
+                certificateStore.Add(certificate);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine(ex.ToString());
+                return false;
+            }
         }
 
     }

@@ -52,7 +52,7 @@ namespace Two10.AzureScaleMe.MetricProviders
             if (this.ConfigureCounters)
             {
                 // we do this every time, as instances may have transitioned
-                Trace.WriteLine("Configuring per counters");
+                Trace.WriteLine("Configuring perf counters");
                 Azure.ConfigureDiagnostics(this.CertificateThumbprint, this.SubscriptionId, this.ServiceName, this.StorageConnectionString, this.RoleName, this.SampleRate, 120, new string[] { this.Counter });
             }
 
