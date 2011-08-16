@@ -72,13 +72,13 @@ This metric provider will monitor a message queue, and report whether a scale up
 
 The configuration file looks like this:
 
-  <object type="Two10.AzureScaleMe.MetricProviders.QueueMetricProvider">
-    <property name="StorageConnectionString" value="UseDevelopmentStorage=true" />
-    <property name="QueueName" value="foo" />
-    <property name="MaxValue" value="100" />
-    <property name="MinValue" value="5" />
-    <property name="MaxThresholdWait" value="2" />
-  </object>
+	<object type="Two10.AzureScaleMe.MetricProviders.QueueMetricProvider">
+		<property name="StorageConnectionString" value="UseDevelopmentStorage=true" />
+		<property name="QueueName" value="foo" />
+		<property name="MaxValue" value="100" />
+		<property name="MinValue" value="5" />
+		<property name="MaxThresholdWait" value="2" />
+	</object>
 
 ### PerfCounterMetricProvider
 
@@ -102,21 +102,21 @@ This metric provider will monitor a performance counter, and report whether a sc
 
 The configuration file looks like this:
 
-  <object type="Two10.AzureScaleMe.MetricProviders.PerfCounterMetricProvider">
-    <property name="StorageConnectionString" value="UseDevelopmentStorage=true" />
-    <property name="Counter" value="\Processor(_Total)\% Processor Time" />
-    <property name="MaxValue" value="80" />
-    <property name="MinValue" value="5" />
-    <property name="MaxThresholdWait" value="20" />
-    <property name="SampleRate" value="5" />
-    <property name="SamplePeriod" value="10" />
-    <property name="SubscriptionId" value="82f8e1cd-ee8d-414e-b6a5-be7b18a1fa89" />
-    <property name="ServiceName" value="ServiceName" />
-    <property name="RoleName" value="RoleName" />
-    <property name="CertificateThumbprint" value="B929E1E212A92B9CA67F7445F9CB8BF09EC5231E" />
-    <property name="ConfigureCounters" value="True" />
-    <property name="CounterTableName" value="WADPerformanceCountersTable" />
-  </object>
+	<object type="Two10.AzureScaleMe.MetricProviders.PerfCounterMetricProvider">
+		<property name="StorageConnectionString" value="UseDevelopmentStorage=true" />
+		<property name="Counter" value="\Processor(_Total)\% Processor Time" />
+		<property name="MaxValue" value="80" />
+		<property name="MinValue" value="5" />
+		<property name="MaxThresholdWait" value="20" />
+		<property name="SampleRate" value="5" />
+		<property name="SamplePeriod" value="10" />
+		<property name="SubscriptionId" value="82f8e1cd-ee8d-414e-b6a5-be7b18a1fa89" />
+		<property name="ServiceName" value="ServiceName" />
+		<property name="RoleName" value="RoleName" />
+		<property name="CertificateThumbprint" value="B929E1E212A92B9CA67F7445F9CB8BF09EC5231E" />
+		<property name="ConfigureCounters" value="True" />
+		<property name="CounterTableName" value="WADPerformanceCountersTable" />
+	</object>
 
 If performance counters are already configured, the metric provider can be pointed at the existing table capturing the data. If not, the provider can create the tables, and configure the roles accordingly.
 
@@ -153,7 +153,7 @@ Min will report the lowset provided metric result (optimistic).
 Max will report the higest value (pessimistic). 
 Sum will add together all results.
 
- > For example, if one metric is returning a scale up (+1) and another is returning scale down (-1). The min function will return -1, the max function will return +1, and the sum fucntion will return 0. This setting should be carefully chosen if more than one metric is employed. If there is only one metric, it's irrelevant.
+ > For example, if one metric is returning a scale up (+1) and another is returning scale down (-1). The min function will return -1, the max function will return +1, and the sum function will return 0. This setting should be carefully chosen if more than one metric is employed. If there is only one metric, it's irrelevant.
 
 The settings of a RoleMonitor are:
 
