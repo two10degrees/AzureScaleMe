@@ -6,7 +6,7 @@ A simple application which allows you to scale Windows Azure instances using use
 Introduction
 ------------
 
-The ability to quickly scale the number of servers running your application is one of the most compelling features of the Windows Azure platform. However, the ability to do this automatically is not a feature currently available in platform. A number of tools and samples are available demonstrating how this can be done but they are either over-complicated, inflexible or incomplete. AzureScaleMe attempts to overcome this problem with a simple programming model which supports extensibility. This means that if you don't like the way metrics are captured, you can plug your own code in by implementing one method and changing some configuration.
+The ability to quickly scale the number of servers running your application is one of the most compelling features of the Windows Azure platform. However, the ability to do this automatically is not a feature currently available. A number of tools and samples demonstrate how this can be done but they are either very complicated, inflexible or incomplete. AzureScaleMe attempts to overcome this problem with a simple programming model which supports extensibility. This means that if you don't like the way metrics are captured, you can plug your own code in by implementing one method and changing some configuration.
 
 Deployment
 ----------
@@ -14,7 +14,7 @@ Deployment
 AzureScaleMe supports two modes of deployment. 
 
  - It will run as a stand-alone console application.
- - It can be deployed as a Worker Role on Windows Azure (the tool is designed to run as a single instance only).
+ - It can be deployed as a Worker Role on Windows Azure (the application is designed to run as a single instance only).
 
 How it works
 ------------
