@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 namespace Two10.AzureScaleMe.MetricProviders
 {
-    public class PerfCounterMetricProvider : AbstractMetricProvider
+    public class SimplePerfCounterMetricProvider : AbstractMetricProvider
     {
         public string StorageConnectionString { get; private set; }
 
@@ -26,39 +26,13 @@ namespace Two10.AzureScaleMe.MetricProviders
         /// </summary>
         public int SamplePeriod { get; private set; }
 
-        public string CertificateThumbprint { get; private set; }
-
-        public string SubscriptionId { get; private set; }
-
-        public string ServiceName { get; private set; }
-
-        public string RoleName { get; private set; }
-
-        public bool ConfigureCounters { get; private set; }
-
-        public string CounterTableName { get; private set; }
-
-        private static bool init = false;
-
         protected override double GetValue()
         {
-            if (!init)
-            {
-                Trace.WriteLine("Creating perf counter table");
-                PerformanceCounterEntryDataSource.CreateTables(this.CounterTableName);
-                init = true;
-            }
-
-            if (this.ConfigureCounters)
-            {
-                // we do this every time, as instances may have transitioned
-                Trace.WriteLine("Configuring perf counters");
-                Azure.ConfigureDiagnostics(this.CertificateThumbprint, this.SubscriptionId, this.ServiceName, this.StorageConnectionString, this.RoleName, this.SampleRate, 120, new string[] { this.Counter });
-            }
+     
 
             Trace.WriteLine("Retrieving perf counters");
             var ds = new PerformanceCounterEntryDataSource(this.StorageConnectionString);
-            var sample = ds.Select(this.SamplePeriod, this.CounterTableName);
+            var sample = ds.Select(this.SamplePeriod, "WADPerformanceCountersTable");
             if (!sample.Any())
             {
                 throw new AbstractMetricProvider.NoPerfCountersException();

@@ -34,9 +34,9 @@ namespace Two10.AzureScaleMe
         private static CloudStorageAccount storageAccount;
         private PerformanceCounterDataContext context;
 
-        public static void CreateTables(string connectionString, string tableName)
+        public static void CreateTables(string tableName)
         {
-            storageAccount = CloudStorageAccount.Parse(connectionString);
+            
             storageAccount.CreateCloudTableClient().CreateTableIfNotExist(tableName);
             
             /*
@@ -48,6 +48,7 @@ namespace Two10.AzureScaleMe
 
         public PerformanceCounterEntryDataSource(string connectionString)
         {
+            storageAccount = CloudStorageAccount.Parse(connectionString);
             this.context = new PerformanceCounterDataContext(storageAccount.TableEndpoint.AbsoluteUri, storageAccount.Credentials);
             this.context.RetryPolicy = RetryPolicies.Retry(3, TimeSpan.FromSeconds(1));
         }
