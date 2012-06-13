@@ -1,13 +1,13 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Two10.AzureScaleMe", "Two10.AzureScaleMe\Two10.AzureScaleMe.csproj", "{25AFBFC5-80F3-460D-B961-09568237D3DA}"
-EndProject
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0C1B9C95-78B7-4C1B-8A17-A2597F7C49B1}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
 		README.markdown = README.markdown
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Two10.AzureScaleMe", "Two10.AzureScaleMe\Two10.AzureScaleMe.csproj", "{25AFBFC5-80F3-460D-B961-09568237D3DA}"
 EndProject
 Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "Two10.AzureScaleMe.Deploy", "Two10.AzureScaleMe.Deploy\Two10.AzureScaleMe.Deploy.ccproj", "{F5C2E827-CEDF-44D8-9434-229D2676EE86}"
 EndProject

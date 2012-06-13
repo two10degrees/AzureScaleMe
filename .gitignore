@@ -23,3 +23,4 @@ _ReSharper.*
 *.vssscc
 *.csproj.user
 TestResult.xml
+*.ncrunchsolution
