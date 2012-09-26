@@ -5,6 +5,7 @@ using System.Text;
 using System.Security.Cryptography.X509Certificates;
 using System.Diagnostics;
 using System.Threading;
+using System.Globalization;
 
 namespace Two10.AzureScaleMe.MetricProviders
 {
@@ -64,7 +65,7 @@ namespace Two10.AzureScaleMe.MetricProviders
             {
                 throw new AbstractMetricProvider.NoPerfCountersException();
             }
-            double avg = sample.Average((a) => double.Parse(a.CounterValue, Thread.CurrentThread.CurrentCulture));
+            double avg = sample.Average((a) => double.Parse(a.CounterValue, CultureInfo.GetCultureInfo("en-US")));
             Trace.WriteLine(string.Format("Average value of '{2}' value = {0} over {1} samples", avg, sample.Count(), this.Counter));
             return avg;
         }
