@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Security.Cryptography.X509Certificates;
 using System.Diagnostics;
+using System.Threading;
 
 namespace Two10.AzureScaleMe.MetricProviders
 {
@@ -37,7 +38,7 @@ namespace Two10.AzureScaleMe.MetricProviders
             {
                 throw new AbstractMetricProvider.NoPerfCountersException();
             }
-            double avg = sample.Average((a) => double.Parse(a.CounterValue));
+            double avg = sample.Average((a) => double.Parse(a.CounterValue, Thread.CurrentThread.CurrentCulture));
             Trace.WriteLine(string.Format("Average value of '{2}' value = {0} over {1} samples", avg, sample.Count(), this.Counter));
             return avg;
         }
